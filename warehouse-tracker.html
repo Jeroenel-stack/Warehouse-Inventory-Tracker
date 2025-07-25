@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Warehouse Inventory Tracker</title>
+</head>
+<body>
+  <h2>Check the Console (F12) for Inventory</h2>
+
+  <script>
+    const transactions = [
+        { item: "Laptops", type: "in", qty: 20 },
+        { item: "Laptops", type: "out", qty: 5 },
+        { item: "Monitors", type: "in", qty: 10 },
+        { item: "Laptops", type: "out", qty: 18 },
+        { item: "Monitors", type: "out", qty: 3 },
+        { item: "Keyboards", type: "in", qty: 15 }
+    ];
+
+    function calculateInventory(transactions) {
+        const inventory = {};
+
+        for (let tx of transactions) {
+            const { item, type, qty } = tx;
+            if (!inventory[item]) inventory[item] = 0;
+
+            if (type === 'in') {
+                inventory[item] += qty;
+            } else if (type === 'out') {
+                if (inventory[item] < qty) {
+                    console.log(`❌ Not enough stock to ship ${qty} ${item}(s). Available: ${inventory[item]}`);
+                    continue;
+                }
+                inventory[item] -= qty;
+            }
+        }
+
+        console.log("\n📦 Final Inventory:");
+        for (let item in inventory) {
+            console.log(`${item}: ${inventory[item]}`);
+        }
+    }
+
+    calculateInventory(transactions);
+  </script>
+</body>
+</html>
